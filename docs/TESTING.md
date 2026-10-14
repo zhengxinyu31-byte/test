@@ -72,3 +72,5 @@
 首次匿名浏览器检查遇到模型输出不完整，页面提示重试或手动编辑。第二次解析成功，但数据接口报默认缓存不可访问。已复现：Cloudflare namespaced Worker 禁用 `caches.default`。改为具名隔离缓存，缓存不可用时仍获取真实数据；缓存写入失败不丢弃已验证的新数据。三个回归用例均先失败后通过，完整测试为 73/73。金融接口失败仍按原逻辑报告，不用旧数据填补。
 
 平台依据：[Cloudflare Workers for Platforms 限制](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/reference/limits/)。这属于生产环境适配问题，不归因于金融供应商。
+
+修复后，在[公开 Demo](https://stock-intent-lab-zheng.liaoyanqing666.chatgpt.site) 的独立匿名浏览器上下文中完成 10/10 项检查，无未捕获页面错误。前两次失败与最终成功均保留在 [公开验证记录](validation/public-browser.json)，不只展示成功样例。最后一次包含真实 AI、真实上证 50 数据、证据查看、条件变化、三股比较、保存恢复、窄屏和明确标注的故障注入。

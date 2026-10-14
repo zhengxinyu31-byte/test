@@ -1,0 +1,76 @@
+[
+  {
+    "attempt": "browser-public-first-attempt.json",
+    "base": "https://stock-intent-lab-zheng.liaoyanqing666.chatgpt.site",
+    "testedAt": "2026-10-14T19:30:47.898Z",
+    "results": [
+      {
+        "name": "flow failure",
+        "passed": false,
+        "error": "expect(locator).toBeVisible() failed\n\nLocator: locator('.clarification')\nExpected: visible\nTimeout: 60000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" locator('.clarification') with timeout 60000ms\n  - waiting for locator('.clarification')\n"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "attempt": "browser-public-cache-failure.json",
+    "base": "https://stock-intent-lab-zheng.liaoyanqing666.chatgpt.site",
+    "testedAt": "2026-10-14T19:34:27.115Z",
+    "results": [
+      {
+        "name": "flow failure",
+        "passed": false,
+        "error": "expect(locator).toBeVisible() failed\n\nLocator: locator('.snapshot-line')\nExpected: visible\nTimeout: 180000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" locator('.snapshot-line') with timeout 180000ms\n  - waiting for locator('.snapshot-line')\n"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "attempt": "browser-e2e.json",
+    "base": "https://stock-intent-lab-zheng.liaoyanqing666.chatgpt.site",
+    "testedAt": "2026-10-14T20:08:00.633Z",
+    "results": [
+      {
+        "name": "real AI clarification + user-defined PE + real 50-stock screening",
+        "passed": true
+      },
+      {
+        "name": "pass evidence raw fields and calculation",
+        "passed": true
+      },
+      {
+        "name": "exclusion retains per-condition evidence",
+        "passed": true
+      },
+      {
+        "name": "threshold change preserves snapshot and shows added/removed",
+        "passed": true
+      },
+      {
+        "name": "compare maximum three",
+        "passed": true
+      },
+      {
+        "name": "save/reload/restore explicitly historical",
+        "passed": true
+      },
+      {
+        "name": "mobile no document overflow",
+        "passed": true
+      },
+      {
+        "name": "model failure visible and manual editing remains",
+        "passed": true
+      },
+      {
+        "name": "data failure does not fabricate results",
+        "passed": true
+      },
+      {
+        "name": "no uncaught browser errors",
+        "passed": true
+      }
+    ],
+    "errors": []
+  }
+]
