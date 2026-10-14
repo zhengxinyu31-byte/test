@@ -1,0 +1,46 @@
+{
+  "testedAt": "2026-10-14T19:22:22.929Z",
+  "results": [
+    {
+      "name": "real AI clarification + user-defined PE + real 50-stock screening",
+      "passed": true
+    },
+    {
+      "name": "pass evidence raw fields and calculation",
+      "passed": true
+    },
+    {
+      "name": "exclusion retains per-condition evidence",
+      "passed": true
+    },
+    {
+      "name": "threshold change preserves snapshot and shows added/removed",
+      "passed": true
+    },
+    {
+      "name": "compare maximum three",
+      "passed": true
+    },
+    {
+      "name": "save/reload/restore explicitly historical",
+      "passed": true
+    },
+    {
+      "name": "mobile no document overflow",
+      "passed": true
+    },
+    {
+      "name": "model failure visible and manual editing remains",
+      "passed": true
+    },
+    {
+      "name": "data failure does not fabricate results",
+      "passed": true
+    },
+    {
+      "name": "no uncaught browser errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

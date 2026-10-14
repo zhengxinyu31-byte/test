@@ -1,0 +1,1645 @@
+[
+  {
+    "round": "free-router-baseline",
+    "passed": 3,
+    "total": 8,
+    "cases": [
+      {
+        "id": "fuzzy",
+        "input": "经营改善、估值合理、走势相对稳定",
+        "started": "2026-10-14T17:41:25.501Z",
+        "elapsedMs": 23072,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "revenue-0",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善"
+            },
+            {
+              "id": "profit-1",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善"
+            }
+          ],
+          "questions": [
+            "“估值合理”还没有可执行标准。行业与公司特征会影响估值；请自行指定 PE(TTM) 上限，或明确暂不筛估值。行业相对估值尚不支持。"
+          ],
+          "unsupported": [],
+          "notices": [],
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "report": "2026H1",
+          "unresolved": [
+            "valuation"
+          ],
+          "requestedReport": "2026H1",
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "经营改善",
+              "conditionIds": [
+                "revenue-0"
+              ],
+              "requiresConfirmation": true
+            },
+            {
+              "sourceText": "经营改善",
+              "conditionIds": [
+                "profit-1"
+              ],
+              "requiresConfirmation": true
+            }
+          ],
+          "requestId": "gen-1791999686-HcEvvrjfDPvfKzp8t7mG"
+        }
+      },
+      {
+        "id": "precise",
+        "input": "营收同比大于0，归母净利润同比大于0，PE不超过20",
+        "started": "2026-10-14T17:41:48.575Z",
+        "elapsedMs": 10675,
+        "passed": false,
+        "error": "模型没有忠实保留明确阈值，请重试或手动编辑。"
+      },
+      {
+        "id": "negative",
+        "input": "不要归母净利润下降的公司，PE小于20",
+        "started": "2026-10-14T17:41:59.250Z",
+        "elapsedMs": 9230,
+        "passed": false,
+        "error": "模型输出不完整，请重试或手动编辑。"
+      },
+      {
+        "id": "patch",
+        "input": "把PE上限改成20，其他不变",
+        "started": "2026-10-14T17:42:08.481Z",
+        "elapsedMs": 6319,
+        "passed": false,
+        "error": "修改模式只能返回指定条件的修改，不能重写整个策略。"
+      },
+      {
+        "id": "conflict",
+        "input": "PE大于30，同时PE小于15",
+        "started": "2026-10-14T17:42:14.801Z",
+        "elapsedMs": 8839,
+        "passed": false,
+        "actual": {
+          "status": "unsupported",
+          "conditions": [],
+          "questions": [
+            "请澄清PE的具体要求：是PE大于30还是PE小于15？"
+          ],
+          "unsupported": [
+            ">30",
+            "<15"
+          ],
+          "notices": [],
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": "2026H1",
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [],
+          "requestId": "gen-1791999735-0Lp2FhWqeOko33TuiVyC"
+        }
+      },
+      {
+        "id": "inapplicable",
+        "input": "银行估值合理，同时资产质量改善",
+        "started": "2026-10-14T17:42:23.640Z",
+        "elapsedMs": 8363,
+        "passed": true,
+        "actual": {
+          "status": "unsupported",
+          "conditions": [],
+          "questions": [
+            "估值合理需要澄清比较基准（如PE相对于行业均值或历史均值）",
+            "“估值合理”还没有可执行标准。行业与公司特征会影响估值；请自行指定 PE(TTM) 上限，或明确暂不筛估值。行业相对估值尚不支持。"
+          ],
+          "unsupported": [
+            "资产质量改善"
+          ],
+          "notices": [],
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "report": "2026H1",
+          "unresolved": [
+            "valuation"
+          ],
+          "requestedReport": "2026H1",
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [],
+          "requestId": "gen-1791999744-gEIpUjk1s80wjoGKBEsA"
+        }
+      },
+      {
+        "id": "negative-repeat",
+        "input": "不要归母净利润下降的公司，PE小于20",
+        "started": "2026-10-14T17:42:32.004Z",
+        "elapsedMs": 19003,
+        "passed": false,
+        "error": "模型输出不完整，请重试或手动编辑。"
+      },
+      {
+        "id": "patch-repeat",
+        "input": "把PE上限改成20，其他不变",
+        "started": "2026-10-14T17:42:51.008Z",
+        "elapsedMs": 6446,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "revenue",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善 → 营收同比为正"
+            },
+            {
+              "id": "profit",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善 → 归母净利润同比为正"
+            },
+            {
+              "id": "pe",
+              "field": "pe",
+              "op": "<=",
+              "value": 20,
+              "sourceText": "估值合理 → 正 PE(TTM) 不高于 25 倍"
+            },
+            {
+              "id": "volatility",
+              "field": "volatility",
+              "op": "<=",
+              "value": 30,
+              "sourceText": "走势相对稳定 → 年化波动率不高于 30%"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [
+            "已将 PE 上限从 25 倍调整为 20 倍，其他条件保持不变。"
+          ],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": "2026H1",
+          "operations": [
+            {
+              "type": "update",
+              "id": "pe",
+              "op": "<=",
+              "value": 20
+            }
+          ],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "经营改善 → 营收同比为正",
+              "conditionIds": [
+                "revenue"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "经营改善 → 归母净利润同比为正",
+              "conditionIds": [
+                "profit"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "估值合理 → 正 PE(TTM) 不高于 25 倍",
+              "conditionIds": [
+                "pe"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "走势相对稳定 → 年化波动率不高于 30%",
+              "conditionIds": [
+                "volatility"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1791999771-nlhCvmDy3768gE4blo65"
+        }
+      }
+    ]
+  },
+  {
+    "round": "pinned-model-comparison",
+    "passed": 8,
+    "total": 8,
+    "cases": [
+      {
+        "id": "fuzzy",
+        "input": "经营改善、估值合理、走势相对稳定",
+        "started": "2026-10-14T17:45:29.977Z",
+        "elapsedMs": 8713,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "revenue-0",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善"
+            },
+            {
+              "id": "profit-1",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善"
+            }
+          ],
+          "questions": [
+            "请确认“估值合理”的具体比较基准是什么？",
+            "请确认“走势相对稳定”是否采用默认的 volatility<=30，或者是否需要改为 drawdown<=15？",
+            "“估值合理”还没有可执行标准。行业与公司特征会影响估值；请自行指定 PE(TTM) 上限，或明确暂不筛估值。行业相对估值尚不支持。"
+          ],
+          "unsupported": [],
+          "notices": [
+            "估值合理：请澄清是相对于历史估值、行业均值还是其他基准，本系统无法自动生成PE阈值",
+            "走势相对稳定：已按默认阈值 volatility<=30 处理，也可改为 drawdown<=15，但需注意低波动不等于低回撤"
+          ],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [
+            "valuation"
+          ],
+          "requestedReport": "2026H1",
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "经营改善",
+              "conditionIds": [
+                "revenue-0"
+              ],
+              "requiresConfirmation": true
+            },
+            {
+              "sourceText": "经营改善",
+              "conditionIds": [
+                "profit-1"
+              ],
+              "requiresConfirmation": true
+            }
+          ],
+          "requestId": "gen-1791999930-BI7jmyB5MNkH2Yfsfwcx"
+        }
+      },
+      {
+        "id": "precise",
+        "input": "营收同比大于0，归母净利润同比大于0，PE不超过20",
+        "started": "2026-10-14T17:45:38.691Z",
+        "elapsedMs": 6016,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "revenue-0",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "营收同比大于0"
+            },
+            {
+              "id": "profit-1",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "归母净利润同比大于0"
+            },
+            {
+              "id": "pe-2",
+              "field": "pe",
+              "op": "<=",
+              "value": 20,
+              "sourceText": "PE不超过20"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [
+            "已按用户要求，将“归母净利润”映射为系统支持的“profit”字段。",
+            "所有条件使用AND逻辑连接。",
+            "报告期已设定为2026H1。"
+          ],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": "2026H1",
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "营收同比大于0",
+              "conditionIds": [
+                "revenue-0"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "归母净利润同比大于0",
+              "conditionIds": [
+                "profit-1"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "PE不超过20",
+              "conditionIds": [
+                "pe-2"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1791999939-UAKP98tIUwMEp8Gr9uUD"
+        }
+      },
+      {
+        "id": "negative",
+        "input": "不要归母净利润下降的公司，PE小于20",
+        "started": "2026-10-14T17:45:44.708Z",
+        "elapsedMs": 4148,
+        "passed": true,
+        "actual": {
+          "status": "ready",
+          "conditions": [
+            {
+              "id": "profit-0",
+              "field": "profit",
+              "op": ">=",
+              "value": 0,
+              "sourceText": "不要归母净利润下降的公司"
+            },
+            {
+              "id": "pe-1",
+              "field": "pe",
+              "op": "<",
+              "value": 20,
+              "sourceText": "PE小于20"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": "2026H1",
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "不要归母净利润下降的公司",
+              "conditionIds": [
+                "profit-0"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "PE小于20",
+              "conditionIds": [
+                "pe-1"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1791999945-sWqGFj69JUoardiViuY5"
+        }
+      },
+      {
+        "id": "patch",
+        "input": "把PE上限改成20，其他不变",
+        "started": "2026-10-14T17:45:48.857Z",
+        "elapsedMs": 5021,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "revenue",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善 → 营收同比为正"
+            },
+            {
+              "id": "profit",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善 → 归母净利润同比为正"
+            },
+            {
+              "id": "pe",
+              "field": "pe",
+              "op": "<=",
+              "value": 20,
+              "sourceText": "估值合理 → 正 PE(TTM) 不高于 25 倍"
+            },
+            {
+              "id": "volatility",
+              "field": "volatility",
+              "op": "<=",
+              "value": 30,
+              "sourceText": "走势相对稳定 → 年化波动率不高于 30%"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [
+            "已将PE上限从25改为20，其他条件保持不变。"
+          ],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": "2026H1",
+          "operations": [
+            {
+              "type": "update",
+              "id": "pe",
+              "op": "<=",
+              "value": 20
+            }
+          ],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "经营改善 → 营收同比为正",
+              "conditionIds": [
+                "revenue"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "经营改善 → 归母净利润同比为正",
+              "conditionIds": [
+                "profit"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "估值合理 → 正 PE(TTM) 不高于 25 倍",
+              "conditionIds": [
+                "pe"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "走势相对稳定 → 年化波动率不高于 30%",
+              "conditionIds": [
+                "volatility"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1791999949-AzBAFgLXt7dF0BcLv6mV"
+        }
+      },
+      {
+        "id": "conflict",
+        "input": "PE大于30，同时PE小于15",
+        "started": "2026-10-14T17:45:53.879Z",
+        "elapsedMs": 17227,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "pe-0",
+              "field": "pe",
+              "op": ">",
+              "value": 30,
+              "sourceText": "PE大于30"
+            },
+            {
+              "id": "pe-1",
+              "field": "pe",
+              "op": "<",
+              "value": 15,
+              "sourceText": "PE小于15"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [
+            "条件存在逻辑冲突：PE需同时大于30且小于15，无法满足。请检查输入。"
+          ],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": "2026H1",
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "PE大于30",
+              "conditionIds": [
+                "pe-0"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "PE小于15",
+              "conditionIds": [
+                "pe-1"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1791999954-mnTG150I54iXdBWqZJ8Q"
+        }
+      },
+      {
+        "id": "inapplicable",
+        "input": "银行估值合理，同时资产质量改善",
+        "started": "2026-10-14T17:46:11.107Z",
+        "elapsedMs": 8599,
+        "passed": true,
+        "actual": {
+          "status": "unsupported",
+          "conditions": [
+            {
+              "id": "profit-0",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "资产质量改善"
+            },
+            {
+              "id": "revenue-1",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "资产质量改善"
+            }
+          ],
+          "questions": [
+            "请明确“估值合理”的具体比较基准。",
+            "请确认是否需要排除ST、*ST股票？",
+            "请确认是否需要限制股票市值规模？",
+            "“估值合理”还没有可执行标准。行业与公司特征会影响估值；请自行指定 PE(TTM) 上限，或明确暂不筛估值。行业相对估值尚不支持。"
+          ],
+          "unsupported": [
+            "银行行业/板块过滤",
+            "估值合理（缺少明确PE阈值或比较基准）"
+          ],
+          "notices": [
+            "估值合理：请明确比较基准，例如与历史均值、行业均值或无风险利率比较。",
+            "银行：当前不支持行业或板块过滤，已将“银行”记录在unsupported中。"
+          ],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [
+            "valuation"
+          ],
+          "requestedReport": "2026H1",
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "资产质量改善",
+              "conditionIds": [
+                "profit-0"
+              ],
+              "requiresConfirmation": true
+            },
+            {
+              "sourceText": "资产质量改善",
+              "conditionIds": [
+                "revenue-1"
+              ],
+              "requiresConfirmation": true
+            }
+          ],
+          "requestId": "gen-1791999971-6DfaDdh69yP11wxkzKK9"
+        }
+      },
+      {
+        "id": "negative-repeat",
+        "input": "不要归母净利润下降的公司，PE小于20",
+        "started": "2026-10-14T17:46:19.708Z",
+        "elapsedMs": 5792,
+        "passed": true,
+        "actual": {
+          "status": "ready",
+          "conditions": [
+            {
+              "id": "profit-0",
+              "field": "profit",
+              "op": ">=",
+              "value": 0,
+              "sourceText": "不要归母净利润下降的公司"
+            },
+            {
+              "id": "pe-1",
+              "field": "pe",
+              "op": "<",
+              "value": 20,
+              "sourceText": "PE小于20"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": "2026H1",
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "不要归母净利润下降的公司",
+              "conditionIds": [
+                "profit-0"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "PE小于20",
+              "conditionIds": [
+                "pe-1"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1791999980-wHOhAl0WLAbjiRZ38Xbe"
+        }
+      },
+      {
+        "id": "patch-repeat",
+        "input": "把PE上限改成20，其他不变",
+        "started": "2026-10-14T17:46:25.501Z",
+        "elapsedMs": 5013,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "revenue",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善 → 营收同比为正"
+            },
+            {
+              "id": "profit",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善 → 归母净利润同比为正"
+            },
+            {
+              "id": "pe",
+              "field": "pe",
+              "op": "<=",
+              "value": 20,
+              "sourceText": "估值合理 → 正 PE(TTM) 不高于 25 倍"
+            },
+            {
+              "id": "volatility",
+              "field": "volatility",
+              "op": "<=",
+              "value": 30,
+              "sourceText": "走势相对稳定 → 年化波动率不高于 30%"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [
+            "已将估值合理条件中的PE上限从25调整为20。",
+            "其他筛选条件保持不变。"
+          ],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": "2026H1",
+          "operations": [
+            {
+              "type": "update",
+              "id": "pe",
+              "op": "<=",
+              "value": 20
+            }
+          ],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "经营改善 → 营收同比为正",
+              "conditionIds": [
+                "revenue"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "经营改善 → 归母净利润同比为正",
+              "conditionIds": [
+                "profit"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "估值合理 → 正 PE(TTM) 不高于 25 倍",
+              "conditionIds": [
+                "pe"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "走势相对稳定 → 年化波动率不高于 30%",
+              "conditionIds": [
+                "volatility"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1791999985-Aaod2Nbfyd7xhpGtIxCc"
+        }
+      }
+    ]
+  },
+  {
+    "round": "clarification-prompt",
+    "passed": 7,
+    "total": 8,
+    "cases": [
+      {
+        "id": "fuzzy",
+        "input": "经营改善、估值合理、走势相对稳定",
+        "started": "2026-10-14T17:46:55.664Z",
+        "elapsedMs": 16379,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "revenue-0",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善"
+            },
+            {
+              "id": "profit-1",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善"
+            },
+            {
+              "id": "volatility-2",
+              "field": "volatility",
+              "op": "<=",
+              "value": 30,
+              "sourceText": "走势相对稳定"
+            }
+          ],
+          "questions": [
+            "经营改善是否以营收和归母净利润同比为正衡量？",
+            "稳定可指波动率或回撤，请确认指标；30%只是演示起点。",
+            "估值合理没有统一数值标准，请自行指定绝对倍数或暂不筛估值。",
+            "“估值合理”还没有可执行标准。行业与公司特征会影响估值；请自行指定 PE(TTM) 上限，或明确暂不筛估值。行业相对估值尚不支持。"
+          ],
+          "unsupported": [],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [
+            "valuation"
+          ],
+          "requestedReport": "2026H1",
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "经营改善",
+              "conditionIds": [
+                "revenue-0"
+              ],
+              "requiresConfirmation": true
+            },
+            {
+              "sourceText": "经营改善",
+              "conditionIds": [
+                "profit-1"
+              ],
+              "requiresConfirmation": true
+            },
+            {
+              "sourceText": "走势相对稳定",
+              "conditionIds": [
+                "volatility-2"
+              ],
+              "requiresConfirmation": true
+            }
+          ],
+          "requestId": "gen-1792000016-9jkQ0Wf5GG36usUNbVEi"
+        }
+      },
+      {
+        "id": "precise",
+        "input": "营收同比大于0，归母净利润同比大于0，PE不超过20",
+        "started": "2026-10-14T17:47:12.044Z",
+        "elapsedMs": 3019,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "revenue-0",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "营收同比大于0"
+            },
+            {
+              "id": "profit-1",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "归母净利润同比大于0"
+            },
+            {
+              "id": "pe-2",
+              "field": "pe",
+              "op": "<=",
+              "value": 20,
+              "sourceText": "PE不超过20"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": null,
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "营收同比大于0",
+              "conditionIds": [
+                "revenue-0"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "归母净利润同比大于0",
+              "conditionIds": [
+                "profit-1"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "PE不超过20",
+              "conditionIds": [
+                "pe-2"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1792000032-sanopFKhrq31wQBeiReF"
+        }
+      },
+      {
+        "id": "negative",
+        "input": "不要归母净利润下降的公司，PE小于20",
+        "started": "2026-10-14T17:47:15.064Z",
+        "elapsedMs": 20065,
+        "passed": true,
+        "actual": {
+          "status": "unsupported",
+          "conditions": [
+            {
+              "id": "profit-0",
+              "field": "profit",
+              "op": ">=",
+              "value": 0,
+              "sourceText": "不要归母净利润下降的公司"
+            },
+            {
+              "id": "pe-1",
+              "field": "pe",
+              "op": "<",
+              "value": 20,
+              "sourceText": "PE小于20"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": null,
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "不要归母净利润下降的公司",
+              "conditionIds": [
+                "profit-0"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "PE小于20",
+              "conditionIds": [
+                "pe-1"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1792000035-LQOZFbmAN8mJpWx42Rf2"
+        }
+      },
+      {
+        "id": "patch",
+        "input": "把PE上限改成20，其他不变",
+        "started": "2026-10-14T17:47:35.130Z",
+        "elapsedMs": 20024,
+        "passed": true,
+        "actual": {
+          "status": "unsupported",
+          "conditions": [
+            {
+              "id": "revenue",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善 → 营收同比为正"
+            },
+            {
+              "id": "profit",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善 → 归母净利润同比为正"
+            },
+            {
+              "id": "pe",
+              "field": "pe",
+              "op": "<=",
+              "value": 20,
+              "sourceText": "估值合理 → 正 PE(TTM) 不高于 25 倍"
+            },
+            {
+              "id": "volatility",
+              "field": "volatility",
+              "op": "<=",
+              "value": 30,
+              "sourceText": "走势相对稳定 → 年化波动率不高于 30%"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": null,
+          "operations": [
+            {
+              "type": "update",
+              "id": "pe",
+              "op": "<=",
+              "value": 20
+            }
+          ],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "经营改善 → 营收同比为正",
+              "conditionIds": [
+                "revenue"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "经营改善 → 归母净利润同比为正",
+              "conditionIds": [
+                "profit"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "估值合理 → 正 PE(TTM) 不高于 25 倍",
+              "conditionIds": [
+                "pe"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "走势相对稳定 → 年化波动率不高于 30%",
+              "conditionIds": [
+                "volatility"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1792000055-d6qxW7vuIggF0ZDTlCyd"
+        }
+      },
+      {
+        "id": "conflict",
+        "input": "PE大于30，同时PE小于15",
+        "started": "2026-10-14T17:47:55.154Z",
+        "elapsedMs": 4118,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "pe-0",
+              "field": "pe",
+              "op": ">",
+              "value": 30,
+              "sourceText": "PE大于30"
+            },
+            {
+              "id": "pe-1",
+              "field": "pe",
+              "op": "<",
+              "value": 15,
+              "sourceText": "PE小于15"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [
+            "条件冲突：PE 不可能同时大于 30 且小于 15，该组合将无结果。请检查数值是否正确。"
+          ],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": null,
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "PE大于30",
+              "conditionIds": [
+                "pe-0"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "PE小于15",
+              "conditionIds": [
+                "pe-1"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1792000075-DLzL1g2SL4gyG3DZHxy7"
+        }
+      },
+      {
+        "id": "inapplicable",
+        "input": "银行估值合理，同时资产质量改善",
+        "started": "2026-10-14T17:47:59.273Z",
+        "elapsedMs": 5347,
+        "passed": true,
+        "actual": {
+          "status": "unsupported",
+          "conditions": [],
+          "questions": [
+            "估值合理没有统一数值标准，请自行指定绝对PE倍数或暂不筛估值。",
+            "“估值合理”还没有可执行标准。行业与公司特征会影响估值；请自行指定 PE(TTM) 上限，或明确暂不筛估值。行业相对估值尚不支持。"
+          ],
+          "unsupported": [
+            "资产质量改善"
+          ],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [
+            "valuation"
+          ],
+          "requestedReport": null,
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [],
+          "requestId": "gen-1792000079-uqEAstCy1PHNSMUiGKOd"
+        }
+      },
+      {
+        "id": "negative-repeat",
+        "input": "不要归母净利润下降的公司，PE小于20",
+        "started": "2026-10-14T17:48:04.621Z",
+        "elapsedMs": 3481,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "profit-0",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "不要归母净利润下降的公司"
+            },
+            {
+              "id": "pe-1",
+              "field": "pe",
+              "op": "<",
+              "value": 20,
+              "sourceText": "PE小于20"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": null,
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "不要归母净利润下降的公司",
+              "conditionIds": [
+                "profit-0"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "PE小于20",
+              "conditionIds": [
+                "pe-1"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1792000085-nreFAYUKdCYRi2vA86zf"
+        }
+      },
+      {
+        "id": "patch-repeat",
+        "input": "把PE上限改成20，其他不变",
+        "started": "2026-10-14T17:48:08.103Z",
+        "elapsedMs": 32151,
+        "passed": false,
+        "error": "模型输出不完整，请重试或手动编辑。",
+        "model": "dots-studio/dots-3-note-preview:free",
+        "requestId": "gen-1792000088-iFMVVUMziKyw2DV1V0wt"
+      }
+    ]
+  },
+  {
+    "round": "release-candidate",
+    "passed": 7,
+    "total": 8,
+    "cases": [
+      {
+        "id": "fuzzy",
+        "input": "经营改善、估值合理、走势相对稳定",
+        "started": "2026-10-14T19:22:46.920Z",
+        "elapsedMs": 7174,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "revenue-0",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善"
+            },
+            {
+              "id": "profit-1",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善"
+            },
+            {
+              "id": "volatility-2",
+              "field": "volatility",
+              "op": "<=",
+              "value": 30,
+              "sourceText": "走势相对稳定"
+            }
+          ],
+          "questions": [
+            "经营改善，先看营收和归母利润同比是否为正？",
+            "稳定先按波动率筛，还是看最大回撤？30%仅供演示。",
+            "估值没有通用阈值，请自定PE上限，或本次不筛。",
+            "估值需明确标准。请自行设置 PE(TTM) 上限，或本次不筛估值。暂不支持行业相对估值。"
+          ],
+          "unsupported": [],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [
+            "valuation"
+          ],
+          "requestedReport": null,
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "经营改善",
+              "conditionIds": [
+                "revenue-0"
+              ],
+              "requiresConfirmation": true
+            },
+            {
+              "sourceText": "经营改善",
+              "conditionIds": [
+                "profit-1"
+              ],
+              "requiresConfirmation": true
+            },
+            {
+              "sourceText": "走势相对稳定",
+              "conditionIds": [
+                "volatility-2"
+              ],
+              "requiresConfirmation": true
+            }
+          ],
+          "requestId": "gen-1792005767-1Z5mcmq8D0NMqNk4cn1e"
+        }
+      },
+      {
+        "id": "precise",
+        "input": "营收同比大于0，归母净利润同比大于0，PE不超过20",
+        "started": "2026-10-14T19:22:54.095Z",
+        "elapsedMs": 6326,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "revenue-0",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "营收同比大于0"
+            },
+            {
+              "id": "profit-1",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "归母净利润同比大于0"
+            },
+            {
+              "id": "pe-2",
+              "field": "pe",
+              "op": "<=",
+              "value": 20,
+              "sourceText": "PE不超过20"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": null,
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "营收同比大于0",
+              "conditionIds": [
+                "revenue-0"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "归母净利润同比大于0",
+              "conditionIds": [
+                "profit-1"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "PE不超过20",
+              "conditionIds": [
+                "pe-2"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1792005774-bRnjm6mAjrG9L0rO9w8S"
+        }
+      },
+      {
+        "id": "negative",
+        "input": "不要归母净利润下降的公司，PE小于20",
+        "started": "2026-10-14T19:23:00.422Z",
+        "elapsedMs": 7115,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "profit-0",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "不要归母净利润下降的公司"
+            },
+            {
+              "id": "pe-1",
+              "field": "pe",
+              "op": "<",
+              "value": 20,
+              "sourceText": "PE小于20"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": "2026H1",
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "不要归母净利润下降的公司",
+              "conditionIds": [
+                "profit-0"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "PE小于20",
+              "conditionIds": [
+                "pe-1"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1792005780-2YlvvFLCrbHt1pQIdrda"
+        }
+      },
+      {
+        "id": "patch",
+        "input": "把PE上限改成20，其他不变",
+        "started": "2026-10-14T19:23:07.538Z",
+        "elapsedMs": 14426,
+        "passed": false,
+        "error": "修改目标不存在，请手动指定条件。",
+        "model": "dots-studio/dots-3-note-preview:free",
+        "requestId": "gen-1792005787-dUEI1ElwGmGBZYvP1oTy"
+      },
+      {
+        "id": "conflict",
+        "input": "PE大于30，同时PE小于15",
+        "started": "2026-10-14T19:23:21.965Z",
+        "elapsedMs": 3962,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "pe-0",
+              "field": "pe",
+              "op": ">",
+              "value": 30,
+              "sourceText": "PE大于30"
+            },
+            {
+              "id": "pe-1",
+              "field": "pe",
+              "op": "<",
+              "value": 15,
+              "sourceText": "PE小于15"
+            }
+          ],
+          "questions": [
+            "PE大于30和小于15无法同时成立，请修正条件。"
+          ],
+          "unsupported": [],
+          "notices": [
+            "两个PE条件相互矛盾，无法同时满足。请检查条件是否正确。"
+          ],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": null,
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "PE大于30",
+              "conditionIds": [
+                "pe-0"
+              ],
+              "requiresConfirmation": true
+            },
+            {
+              "sourceText": "PE小于15",
+              "conditionIds": [
+                "pe-1"
+              ],
+              "requiresConfirmation": true
+            }
+          ],
+          "requestId": "gen-1792005802-0pO6n2qjh5ASII5bg74w"
+        }
+      },
+      {
+        "id": "inapplicable",
+        "input": "银行估值合理，同时资产质量改善",
+        "started": "2026-10-14T19:23:25.928Z",
+        "elapsedMs": 5264,
+        "passed": true,
+        "actual": {
+          "status": "unsupported",
+          "conditions": [],
+          "questions": [
+            "估值合理请给出PE上限，或本次不筛？",
+            "资产质量改善不在支持列表，是否改用归母利润同比为正？",
+            "估值需明确标准。请自行设置 PE(TTM) 上限，或本次不筛估值。暂不支持行业相对估值。"
+          ],
+          "unsupported": [
+            "资产质量改善"
+          ],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [
+            "valuation"
+          ],
+          "requestedReport": null,
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [],
+          "requestId": "gen-1792005806-85Tdup8vawCudAy5H2KO"
+        }
+      },
+      {
+        "id": "negative-repeat",
+        "input": "不要归母净利润下降的公司，PE小于20",
+        "started": "2026-10-14T19:23:31.193Z",
+        "elapsedMs": 5019,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "profit-0",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "不要归母净利润下降的公司"
+            },
+            {
+              "id": "pe-1",
+              "field": "pe",
+              "op": "<",
+              "value": 20,
+              "sourceText": "PE小于20"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": null,
+          "operations": [],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "不要归母净利润下降的公司",
+              "conditionIds": [
+                "profit-0"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "PE小于20",
+              "conditionIds": [
+                "pe-1"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1792005811-GWfsrrdsae2MPUFwEwP1"
+        }
+      },
+      {
+        "id": "patch-repeat",
+        "input": "把PE上限改成20，其他不变",
+        "started": "2026-10-14T19:23:36.213Z",
+        "elapsedMs": 8467,
+        "passed": true,
+        "actual": {
+          "status": "clarify",
+          "conditions": [
+            {
+              "id": "revenue",
+              "field": "revenue",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善 → 营收同比为正"
+            },
+            {
+              "id": "profit",
+              "field": "profit",
+              "op": ">",
+              "value": 0,
+              "sourceText": "经营改善 → 归母净利润同比为正"
+            },
+            {
+              "id": "pe",
+              "field": "pe",
+              "op": ">=",
+              "value": 20,
+              "sourceText": "估值合理 → 正 PE(TTM) 不高于 25 倍"
+            },
+            {
+              "id": "volatility",
+              "field": "volatility",
+              "op": "<=",
+              "value": 30,
+              "sourceText": "走势相对稳定 → 年化波动率不高于 30%"
+            }
+          ],
+          "questions": [],
+          "unsupported": [],
+          "notices": [],
+          "model": "dots-studio/dots-3-note-preview:free",
+          "report": "2026H1",
+          "unresolved": [],
+          "requestedReport": null,
+          "operations": [
+            {
+              "type": "update",
+              "id": "pe",
+              "op": ">=",
+              "value": 20
+            }
+          ],
+          "baseRevision": 3,
+          "mappings": [
+            {
+              "sourceText": "经营改善 → 营收同比为正",
+              "conditionIds": [
+                "revenue"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "经营改善 → 归母净利润同比为正",
+              "conditionIds": [
+                "profit"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "估值合理 → 正 PE(TTM) 不高于 25 倍",
+              "conditionIds": [
+                "pe"
+              ],
+              "requiresConfirmation": false
+            },
+            {
+              "sourceText": "走势相对稳定 → 年化波动率不高于 30%",
+              "conditionIds": [
+                "volatility"
+              ],
+              "requiresConfirmation": false
+            }
+          ],
+          "requestId": "gen-1792005816-ANo0V4CRroDOS9zGgiTn"
+        }
+      }
+    ]
+  }
+]

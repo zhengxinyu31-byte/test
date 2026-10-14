@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { boundaryCheck, validateInterpretation } from '../lib/stock/intent.ts';
+import { validateConditions } from '../lib/stock/engine.ts';
+import type { Condition } from '../lib/stock/types.ts';
+const raw=(field='pe',op='<=',value=25)=>({status:'ready',conditions:[{field,op,value,sourceText:'估值合理'}],questions:[],unsupported:[],notices:[]});
+test('OR and price guarantees cannot silently become ordinary screening',()=>{assert.equal(boundaryCheck('PE小于20或利润大于10')?.status,'unsupported');assert.equal(boundaryCheck('明天必涨，直接告诉我买什么')?.status,'unsupported');});
+test('fuzzy words require confirmation',()=>assert.equal(validateInterpretation(raw(),'估值合理','test','2026H1').status,'clarify'));
+test('explicit numbers and negation cannot silently change',()=>{assert.throws(()=>validateInterpretation(raw(),'PE小于20','test','2026H1'));assert.throws(()=>validateInterpretation(raw('profit','>',0),'利润下降','test','2026H1'));assert.equal(validateInterpretation(raw('pe','<',20),'PE小于20','test','2026H1').conditions[0].value,20);});
+test('invented metrics, inherited object keys and advice are rejected',()=>{for(const field of ['roe','constructor','toString','__proto__']){assert.throws(()=>validateInterpretation(raw(field),'测试','test','2026H1'));assert.ok(validateConditions([{id:'x',field,op:'<=',value:20,sourceText:'x'} as Condition]).length);}assert.throws(()=>validateInterpretation({...raw(),notices:['推荐买入']},'测试','test','2026H1'));});
+test('invalid structures are rejected and contradictions remain visible',()=>{assert.throws(()=>validateInterpretation(null,'测试','test','2026H1'));assert.throws(()=>validateInterpretation({...raw(),questions:'bad'},'测试','test','2026H1'));const r=validateInterpretation({...raw(),conditions:[...raw('pe','>',30).conditions,...raw('pe','<',15).conditions]},'测试','test','2026H1');assert.ok(validateConditions(r.conditions)[0].includes('冲突'));});

@@ -1,0 +1,11 @@
+import {chromium} from '@playwright/test';
+import fs from 'node:fs';
+const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+const page=await browser.newPage({viewport:{width:1440,height:1000}});
+page.on('pageerror',e=>console.log('PAGEERROR',e.message));
+await page.goto('http://127.0.0.1:5173/',{waitUntil:'networkidle'});
+await page.screenshot({path:'outputs/workbench-initial.png',fullPage:true});
+console.log('title:',await page.title());
+console.log('heading:',await page.locator('h1').innerText());
+console.log('overflow:',await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
+await browser.close();
