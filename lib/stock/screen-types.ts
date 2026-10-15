@@ -8,3 +8,4 @@ export interface Benchmark {field:'pe'|'volatility'|'drawdown';valid:boolean;cou
 export interface ScreenCheck {condition:ScreenCondition;status:ScreenStatus;actual:number|null;reason:string;evidence:Evidence[]}
 export interface ScreenEvaluation {stock:Stock;status:ScreenStatus;checks:ScreenCheck[]}
 export interface ScreenRun {version:5;id:string;plan:IntentPlan;dataset:Dataset;benchmarks:Record<'pe'|'volatility'|'drawdown',Benchmark>;conditions:ScreenCondition[];evaluations:ScreenEvaluation[];executedAt:string;history:string[]}
+export type PreparedScreen=Pick<ScreenRun,'plan'|'dataset'|'benchmarks'|'conditions'>;

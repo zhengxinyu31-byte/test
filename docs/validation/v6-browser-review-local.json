@@ -1,0 +1,22 @@
+{
+  "base": "http://127.0.0.1:5173",
+  "at": "2026-10-15T10:50:46.267Z",
+  "results": [
+    {
+      "name": "explicit interpretation preserves 20 and does not return evaluations",
+      "pass": true
+    },
+    {
+      "name": "pre-screen edit is executed on reviewed data, without another model or data call",
+      "pass": true
+    },
+    {
+      "name": "editing intent clears old interpretation and results",
+      "pass": true
+    },
+    {
+      "name": "indicator explanation and execution button remain usable on mobile",
+      "pass": true
+    }
+  ]
+}

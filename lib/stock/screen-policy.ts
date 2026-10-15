@@ -1,7 +1,7 @@
 import { FIELDS, unknownMetric } from './engine.ts';
 import { KNOWLEDGE, KNOWLEDGE_VERSION, EXAMPLES } from './knowledge.ts';
 import type { Dataset, Metric, Stock } from './types.ts';
-import type { Benchmark, IntentPlan, ScreenCondition, ScreenEvaluation, ScreenField, ScreenRun, ScreenStatus } from './screen-types.ts';
+import type { Benchmark, IntentPlan, PreparedScreen, ScreenCondition, ScreenEvaluation, ScreenField, ScreenRun, ScreenStatus } from './screen-types.ts';
 export const SCREEN_FIELDS={...FIELDS,
  ma20gap:{label:'收盘价高于20日均线',short:'距20日均线',unit:'%',description:'(最后完整交易日收盘价 / 最近20个交易日平均收盘价 − 1) × 100%。'},
  return60:{label:'近60个交易日价格涨幅',short:'60日涨幅',unit:'%',description:'(期末 / 60个交易日前的前复权收盘价 − 1) × 100%；不是策略收益。'},
@@ -77,7 +77,9 @@ export function evaluateScreen(d:Dataset,conditions:ScreenCondition[]):ScreenEva
  const status:ScreenStatus=checks.some(c=>c.status==='fail')?'fail':checks.some(c=>c.status==='inapplicable')?'inapplicable':checks.some(c=>c.status==='unknown')?'unknown':'pass';return {stock,status,checks};
  });
 }
-export function makeRun(dataset:Dataset,plan:IntentPlan):ScreenRun{const benchmarks=buildBenchmarks(dataset),conditions=resolvePlan(plan,dataset,benchmarks);return {version:5,id:crypto.randomUUID(),plan,dataset,benchmarks,conditions,evaluations:evaluateScreen(dataset,conditions),executedAt:new Date().toISOString(),history:[]};}
+export function prepareScreen(dataset:Dataset,plan:IntentPlan):PreparedScreen{const benchmarks=buildBenchmarks(dataset);return {plan,dataset,benchmarks,conditions:resolvePlan(plan,dataset,benchmarks)};}
+export function executePreparedScreen(prepared:PreparedScreen):ScreenRun{return {...prepared,version:5,id:crypto.randomUUID(),evaluations:evaluateScreen(prepared.dataset,prepared.conditions),executedAt:new Date().toISOString(),history:[]};}
+export function makeRun(dataset:Dataset,plan:IntentPlan):ScreenRun{return executePreparedScreen(prepareScreen(dataset,plan));}
 export function changeConditions(run:ScreenRun,conditions:ScreenCondition[],description='修改条件'):ScreenRun{return {...run,id:crypto.randomUUID(),conditions,evaluations:evaluateScreen(run.dataset,conditions),executedAt:new Date().toISOString(),history:[...run.history,description]};}
 export function difference(before:ScreenRun,after:ScreenRun){const passed=new Set(before.evaluations.filter(x=>x.status==='pass').map(x=>x.stock.code)),next=new Set(after.evaluations.filter(x=>x.status==='pass').map(x=>x.stock.code));return {added:after.evaluations.filter(x=>next.has(x.stock.code)&&!passed.has(x.stock.code)),removed:before.evaluations.filter(x=>passed.has(x.stock.code)&&!next.has(x.stock.code)),changed:after.evaluations.filter(x=>before.evaluations.find(y=>y.stock.code===x.stock.code)?.status!==x.status)};}
 export function presetPlan(index:number):IntentPlan{const e=EXAMPLES[index];if(!e)throw new Error('示例不存在。');return {query:e.query,goals:e.goals.map(id=>({id,sourceText:e.query})),constraints:index===1?[{field:'pe',op:'<=',value:20,sourceText:'PE不超过20倍'}]:index===5?[{field:'return60',op:'>',value:0,sourceText:'近60个交易日涨幅大于0%'},{field:'revenue',op:'>',value:0,sourceText:'营收同比大于0%'}]:[],unsupported:[],question:null,report:'2026H1',model:'已核对的知识库示例（未调用模型）',knowledgeVersion:KNOWLEDGE_VERSION};}

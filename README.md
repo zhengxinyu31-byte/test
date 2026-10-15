@@ -1,6 +1,6 @@
 # 知衡 · 按想法选股
 
-输入一句选股想法，直接查看真实数据的初筛结果和采用的条件。支持改条件、查看新增与移出、比较三只股票和保存本次研究。
+输入一句选股想法，先查看解读出的金融指标、含义和筛选标准，再点击选股。支持改条件、查看新增与移出、比较三只股票和保存本次研究。
 
 [打开 Web Demo](https://stock-intent-lab-zheng.liaoyanqing666.chatgpt.site) · [源代码](https://github.com/zhengxinyu31-byte/test) · [题目验收对照](docs/REQUIREMENTS-CHECKLIST.md)
 
@@ -8,8 +8,8 @@
 
 ## 怎么用
 
-1. 输入想法或点选六个示例之一，点击“按这个想法筛选”。首次不用填写指标或勾选确认。
-2. 查看本次采用的条件和解释。实质歧义会澄清；不支持的要求会保留并阻止执行，不会偷偷省略。
+1. 输入想法或点选示例，点击“解读选股想法”。首次不用填写指标数值。
+2. 逐项查看“原话 → 金融指标 → 白话含义 → 本次条件”。默认值已经准备好，可按需调整；这一步没有股票名单。确认后点击“按这些条件选股”。实质歧义、冲突和不支持要求会先说明。
 3. 在“符合条件 / 未通过 / 无法判断 / 默认方案不适用”中查看完整名单，点击“看依据”核查原值、公式、时点和来源。
 4. 尝试调整，先看新增、移出和状态变化，再应用或撤销。也可修改具体阈值。
 5. 最多比较三只；一键保存条件、原始想法及本次结果。历史结果明确标记，不当成当前行情。
@@ -43,7 +43,7 @@ npm run test:faults
 node --experimental-strip-types scripts/evaluate-v5.mjs outputs/my-model-eval.json
 ```
 
-浏览器验证使用真实接口，故障注入部分明确标记为测试。`outputs/`只存本机测试产物和供应商数据，已忽略，不得提交。旧版浏览器脚本保留作历史记录，v5主链路使用 `scripts/browser-v5.mjs`。
+浏览器验证使用真实接口，故障注入部分明确标记为测试。`outputs/`只存本机测试产物和供应商数据，已忽略，不得提交。v5及更早的浏览器脚本保留作历史记录，当前三步主链路使用 `scripts/browser-v6.mjs`，选股前修改与返回使用 `scripts/browser-v6-review.mjs`。
 
 ## 环境变量
 
@@ -67,7 +67,7 @@ node --experimental-strip-types scripts/evaluate-v5.mjs outputs/my-model-eval.js
 
 ## 数据与默认条件
 
-扶摇提供当前成分股、估值、利润表、交易日历和前复权日价格。`/api/screen`将意图编译和数据获取串联；`/api/screen/change`仅修改已有基础条件。旧 `/api/interpret` 与 `/api/dataset` 保留兼容，但不再驱动首屏。
+扶摇提供当前成分股、估值、利润表、交易日历和前复权日价格。`/api/screen`使用 `prepareOnly:true` 准备解读、数据和条件，不生成逐股判断；用户点击选股后，确定性引擎按已展示条件在固定快照上执行。`/api/screen/change`仅修改已有基础条件。旧 `/api/interpret` 与 `/api/dataset` 保留兼容，但不再驱动首屏。
 
 - **经营改善**：营收与归母净利润同比均>0。固定报告期为2026年中报，或用户明确的2025年报；正增长不等于增长加速。
 - **估值别太高**：正PE(TTM)不高于本组适用公司的中位数。默认比较要求近两年、本期及同比基期归母利润均为正。只作组内参考，不给公允价值。
@@ -91,7 +91,7 @@ node --experimental-strip-types scripts/evaluate-v5.mjs outputs/my-model-eval.js
 
 ## 交付文档
 
-- [PRD v5](docs/superpowers/specs/2026-10-15-stock-intent-v5-prd.md)、[交互设计](docs/designs/2026-10-15-v5-interaction-design.md)
+- [当前三步交互与验证](docs/INTERACTION-V6.md)；[财务规则PRD v5](docs/superpowers/specs/2026-10-15-stock-intent-v5-prd.md)、[交互设计](docs/designs/2026-10-15-v5-interaction-design.md)
 - [技术设计](docs/TECHNICAL_DESIGN.md)、[实施计划](docs/superpowers/plans/2026-10-15-stock-intent-v5.md)
 - [问句与策略研究](docs/knowledge/intent-strategy-research.md)、[知识库源码](lib/stock/knowledge.ts)
 - [AI使用和修正记录](docs/AI-USAGE-V5.md)、[测试说明与结果](docs/TEST-REPORT-V5.md)
