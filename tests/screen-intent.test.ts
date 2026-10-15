@@ -1,0 +1,9 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import { validatePlan, preflightIntent } from '../lib/stock/screen-intent.ts';
+const raw=(goals:any[]=[],constraints:any[]=[])=>({goals,constraints,unsupported:[],question:null,report:'2026H1'});
+test('preserve explicit numbers, negation and unsupported goals',()=>{assert.throws(()=>validatePlan(raw([],[{field:'pe',op:'<=',value:25,sourceText:'PE≤20'}]),'PE≤20','test'));assert.throws(()=>validatePlan(raw([{id:'profit_growth',sourceText:'不要亏损公司'}]),'不要亏损公司','test'));assert.ok(preflightIntent('现金流好，估值便宜')?.unsupported.length);});
+test('different intent families remain different',()=>{for(const [q,id] of [['收入增加','revenue_growth'],['扭亏为盈','turnaround'],['不要大起大落','low_vol'],['收盘价高于20日均线','trend']]){const p=validatePlan(raw([{id,sourceText:q}]),q,'test');assert.equal(p.goals[0].id,id);assert.equal(p.constraints.length,0);}});
+test('OR, outside universe, prediction and unsupported window do not silently execute',()=>{for(const q of ['便宜或者稳','银行PE低','明天必涨','近30日回撤小','连续三年利润增长','今天上穿20日均线'])assert.ok(preflightIntent(q)?.unsupported.length,q);});
+test('pure explicit input cannot grow unrelated goals; no invented source phrases',()=>{assert.throws(()=>validatePlan(raw([{id:'growth',sourceText:'PE小于20'}],[{field:'pe',op:'<',value:20,sourceText:'PE小于20'}]),'PE小于20','test'));assert.throws(()=>validatePlan(raw([{id:'value',sourceText:'不存在'}]),'便宜','test'));});
+test('explicit numeric constraint supersedes only its redundant corresponding fuzzy goal',()=>{const p=validatePlan(raw([{id:'value',sourceText:'PE≤20'}],[{field:'pe',op:'<=',value:20,sourceText:'PE≤20'}]),'PE≤20','test');assert.equal(p.goals.length,0);assert.equal(p.constraints.length,1);});
+test('fully explicit input requires no AI clarification or invented report choice',()=>{const p=preflightIntent('PE≤20');assert.equal(p?.constraints[0].value,20);assert.equal(p?.question,null);assert.ok(p?.model.includes('未调用模型'));});

@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import { selectPeerMembers, profitHistory } from '../lib/stock/peer-data.ts';
+const meta={requestId:'test',retrievedAt:'2026-10-15T00:00:00Z',sourceTime:'2026-10-15T00:00:00Z'};
+test('set difference retains exchanges and rejects duplicate or non-subset members',()=>{const u=[{thscode:'000001.SZ',name:'A'},{thscode:'600001.SH',name:'B'}];assert.deepEqual(selectPeerMembers(u,[u[1]]),[u[0]]);assert.throws(()=>selectPeerMembers([...u,u[0]],[]));assert.throws(()=>selectPeerMembers(u,[{thscode:'999999.SH'}]));});
+test('profit history separates unknown from known loss and rejects future disclosure',()=>{const row={fiscal_year:2025,fiscal_period:'FY',currency:'CNY',period_end_ms:Date.parse('2025-12-31T00:00:00+08:00'),report_date_ms:Date.parse('2026-03-10'),parent_holder_net_profit:-10};const history=profitHistory([row],meta);assert.equal(history.find(x=>x.period==='2025FY')?.value,-10);assert.equal(history.find(x=>x.period==='2024FY')?.value,null);assert.equal(profitHistory([{...row,report_date_ms:Date.parse('2027-01-01')}],meta).find(x=>x.period==='2025FY')?.value,null);});

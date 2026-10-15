@@ -1,0 +1,30 @@
+{
+  "base": "https://stock-intent-lab-zheng.liaoyanqing666.chatgpt.site",
+  "at": "2026-10-15T09:52:27.595Z",
+  "results": [
+    {
+      "name": "ambiguous intent offers meaningful choices without numeric questions",
+      "pass": true
+    },
+    {
+      "name": "conflict blocks before data execution",
+      "pass": true
+    },
+    {
+      "name": "repair conflict with pure PE, no extra goals",
+      "pass": true
+    },
+    {
+      "name": "injected missing field remains unknown, not zero or normal",
+      "pass": true
+    },
+    {
+      "name": "data authorization failure does not fabricate results",
+      "pass": true
+    },
+    {
+      "name": "stale response cannot overwrite edited intent",
+      "pass": true
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+> 历史v4记录。当前版本请阅读 [v5交付文档](superpowers/plans/2026-10-15-stock-intent-v5.md)。
+
 # 实施记录
 
 ## 当前状态：v4 已公开交付

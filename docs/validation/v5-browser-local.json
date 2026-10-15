@@ -1,0 +1,43 @@
+{
+  "base": "http://127.0.0.1:5173",
+  "at": "2026-10-15T09:29:59.512Z",
+  "results": [
+    {
+      "name": "first screen has no required metric or checkbox",
+      "pass": true
+    },
+    {
+      "name": "real AI + complete real peer universe + one click",
+      "pass": true
+    },
+    {
+      "name": "per-stock evidence includes raw facts",
+      "pass": true
+    },
+    {
+      "name": "same snapshot change preview and apply",
+      "pass": true
+    },
+    {
+      "name": "compare limited to three",
+      "pass": true
+    },
+    {
+      "name": "one-click save, reload and explicit historical restore",
+      "pass": true
+    },
+    {
+      "name": "mobile no overflow",
+      "pass": true
+    },
+    {
+      "name": "failure visible with explicit preset fallback, no fake result",
+      "pass": true
+    },
+    {
+      "name": "no uncaught browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

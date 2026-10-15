@@ -15,10 +15,10 @@ export interface Metric {
   issue?: string; evidence: Evidence[];
 }
 export interface PricePoint { date: string; close: number; volume: number }
-export interface Stock { code: string; name: string; metrics: Record<Field, Metric>; prices: PricePoint[] }
+export interface Stock { profitHistory?: import('./peer-data.ts').ProfitPeriod[]; code: string; name: string; metrics: Record<Field, Metric>; prices: PricePoint[] }
 export interface Dataset {
   id: string; createdAt: string; fetchStartedAt?:string; report: Report; tradeDate: string; windowStart: string;
-  universe: { name: string; code: string; count: number; sourceTime: string | null; requestId: string };
+  universe: { name: string; code: string; count: number; sourceTime: string | null; requestId: string; memberships?: Evidence[] };
   stocks: Stock[]; issues: string[]; source: '扶摇金融数据';
 }
 export interface Check { condition: Condition; status: Status; actual: number | null; reason: string }

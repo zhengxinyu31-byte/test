@@ -1,0 +1,6 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import * as policy from '../lib/stock/screen-policy.ts';
+import type {ScreenCondition} from '../lib/stock/screen-types.ts';
+const current:ScreenCondition[]=[{id:'pe',field:'pe',op:'<=',value:20,origin:'default',goal:'value',basis:'default',sourceText:'估值',benchmark:'pe',percentile:.5,profitGate:true},{id:'vol',field:'volatility',op:'<=',value:25,origin:'default',goal:'stable',basis:'default',sourceText:'走势',benchmark:'volatility',percentile:.5}];
+test('explicit edit preserves other conditions and PE applicability without model dependence',()=>{const next=policy.explicitConditionEdit('PE上限改成25倍，其他条件不变',current)!;assert.equal(next[0].value,25);assert.equal(next[0].profitGate,true);assert.equal(next[0].benchmark,undefined);assert.equal(next[0].origin,'edited');assert.deepEqual(next[1],current[1]);});
+test('explicit edit never discards extra goals or confuses units and ambiguous targets',()=>{for(const query of ['PE上限改成25，利润也好一点','利润改成1亿元','估值放宽一点'])assert.equal(policy.explicitConditionEdit(query,current),null,query);assert.throws(()=>policy.explicitConditionEdit('PE上限改成25%',current),/单位/);assert.throws(()=>policy.explicitConditionEdit('PE上限改成25',[...current,{...current[0],id:'pe2'}]),/多项|目标/);assert.throws(()=>policy.explicitConditionEdit('营收同比下限改成5%',current),/目标/);});

@@ -1,0 +1,8 @@
+{
+  "base": "https://stock-intent-lab-zheng.liaoyanqing666.chatgpt.site",
+  "at": "2026-10-15T09:51:08.731Z",
+  "input": "PE不超过20倍，营收同比大于0%",
+  "edit": "PE上限改成25倍，其他条件不变",
+  "pass": true,
+  "actual": "明确修改未调用模型；仅PE上限从20到25；其他条件保持，预览、应用、撤销成功"
+}

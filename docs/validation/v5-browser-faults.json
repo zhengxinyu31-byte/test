@@ -1,0 +1,30 @@
+{
+  "base": "http://127.0.0.1:5173",
+  "at": "2026-10-15T09:32:02.032Z",
+  "results": [
+    {
+      "name": "ambiguous intent offers meaningful choices without numeric questions",
+      "pass": true
+    },
+    {
+      "name": "conflict blocks before data execution",
+      "pass": true
+    },
+    {
+      "name": "repair conflict with pure PE, no extra goals",
+      "pass": true
+    },
+    {
+      "name": "injected missing field remains unknown, not zero or normal",
+      "pass": true
+    },
+    {
+      "name": "data authorization failure does not fabricate results",
+      "pass": true
+    },
+    {
+      "name": "stale response cannot overwrite edited intent",
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import { KNOWLEDGE, SOURCES, EXAMPLES } from '../lib/stock/knowledge.ts';
+test('knowledge has distinct strategies, provenance and enforceable limits',()=>{assert.ok(KNOWLEDGE.length>=15);assert.equal(new Set(KNOWLEDGE.map(x=>x.id)).size,KNOWLEDGE.length);for(const k of KNOWLEDGE){assert.ok(k.explanation&&k.boundary&&k.applicability);assert.ok(k.sources.length);for(const s of k.sources)assert.ok(SOURCES[s]);}assert.ok(KNOWLEDGE.filter(x=>x.supported).length>=8);assert.ok(EXAMPLES.length>=6);});
+test('observations are not presented as verified customer logs or profitable strategies',()=>{assert.ok(Object.values(SOURCES).some(s=>s.kind==='community'));assert.ok(Object.values(SOURCES).some(s=>s.kind==='professional'));for(const e of EXAMPLES)assert.equal(e.provenance,'constructed');});

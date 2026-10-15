@@ -1,0 +1,31 @@
+{
+  "attempts": [
+    {
+      "at": "2026-10-15T09:38:51.535Z",
+      "query": "PE上限改成25倍，其他条件不变",
+      "status": 502,
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n502 !== 200\n",
+      "actual": "模型输出不完整，请重试或手动编辑。"
+    },
+    {
+      "at": "2026-10-15T09:40:20.722Z",
+      "query": "PE上限改成25倍，其他条件不变",
+      "status": 422,
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n422 !== 200\n",
+      "unchangedOtherConditions": false,
+      "actual": "PE上限改成25倍，其他条件不变 这次未修改条件。可以直接编辑具体数值。"
+    },
+    {
+      "at": "2026-10-15T09:44:45.034Z",
+      "query": "PE上限改成25倍，其他条件不变",
+      "status": 200,
+      "pass": true,
+      "error": "",
+      "model": "明确修改解析（未调用模型）",
+      "unchangedOtherConditions": true,
+      "actual": "PE上限=25，其他条件与元数据不变"
+    }
+  ]
+}

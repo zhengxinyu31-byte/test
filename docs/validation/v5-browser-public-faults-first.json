@@ -1,0 +1,23 @@
+{
+  "base": "https://stock-intent-lab-zheng.liaoyanqing666.chatgpt.site",
+  "at": "2026-10-15T09:50:34.156Z",
+  "results": [
+    {
+      "name": "ambiguous intent offers meaningful choices without numeric questions",
+      "pass": true
+    },
+    {
+      "name": "conflict blocks before data execution",
+      "pass": true
+    },
+    {
+      "name": "repair conflict with pure PE, no extra goals",
+      "pass": true
+    },
+    {
+      "name": "failure",
+      "pass": false,
+      "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+    }
+  ]
+}

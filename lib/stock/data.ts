@@ -1,3 +1,4 @@
+import { selectPeerMembers, profitHistory } from './peer-data.ts';
 import { calculateRisk, calculateYoY, unknownMetric } from './engine.ts';
 import type { Dataset, Evidence, Metric, PricePoint, Report, Stock } from './types.ts';
 
@@ -50,12 +51,13 @@ async function mapLimit<T,R>(items:T[],limit:number,fn:(item:T)=>Promise<R>):Pro
   const result:R[]=new Array(items.length);let cursor=0;
   await Promise.all(Array.from({length:Math.min(limit,items.length)},async()=>{while(cursor<items.length){const i=cursor++;result[i]=await fn(items[i]);}}));return result;
 }
-export async function buildDataset(key:string,report:Report,fetcher:typeof fetch=fetch):Promise<Dataset> {
+export async function buildDataset(key:string,report:Report,fetcher:typeof fetch=fetch,scope:'sse50'|'white-goods'='sse50'):Promise<Dataset> {
   const fetchStartedAt=new Date().toISOString();
   const get=(path:string)=>fetchFuyao(path,key,fetcher);
-  const [u,calendar]=await Promise.all([get('/api/a-share-index/constituents/ths-stock-list?thscode=000016.SH'),get('/api/a-share/calendar/trading-days')]);
-  const members=rows(u.data).filter(x=>typeof x.thscode==='string'&&/^\d{6}\.SH$/.test(x.thscode));
-  if(members.length!==50||new Set(members.map(x=>x.thscode)).size!==members.length)throw new Error('上证 50 成分股清单不足 50 只、重复或异常，无法可靠筛选。');
+  const [u,calendar]=await Promise.all([get('/api/a-share-index/constituents/ths-stock-list?thscode='+(scope==='white-goods'?'881131.TI':'000016.SH')),get('/api/a-share/calendar/trading-days')]);
+  const parts=scope==='white-goods'?await get('/api/a-share-index/constituents/ths-stock-list?thscode=884116.TI'):null;
+  const members=scope==='white-goods'?selectPeerMembers(rows(u.data),rows(parts!.data)):rows(u.data).filter(x=>typeof x.thscode==='string'&&/^\d{6}\.SH$/.test(x.thscode));
+  if(scope==='sse50'&&(members.length!==50||new Set(members.map(x=>x.thscode)).size!==members.length))throw new Error('上证 50 成分股清单不足 50 只、重复或异常，无法可靠筛选。');
   const now=new Date(),today=shanghaiDay(now);
   const calendarTime=calendar.meta.sourceTime?Date.parse(calendar.meta.sourceTime):NaN;
   if(!Number.isFinite(calendarTime)||shanghaiDay(calendarTime)!==today||calendarTime>now.getTime()+60000)throw new Error('交易日历来源时间缺失、过期或异常，不能确认当前交易窗口。');
@@ -65,7 +67,7 @@ export async function buildDataset(key:string,report:Report,fetcher:typeof fetch
   if(expected.length!==61)throw new Error('交易日历不足以构造 60 个完整交易日收益窗口。');
   const end=expected[60],start=expected[0],issues:string[]=[];
   if(now.getTime()-Date.parse(end+'T16:00:00+08:00')>14*86400000)throw new Error('交易日历覆盖范围过期，未使用旧行情作为当前结果。');
-  if(members.length!==50)issues.push(`供应商当前返回 ${members.length} 只成分股，与通常的 50 只不一致，请核对股票池。`);
+  if(scope==='sse50'&&members.length!==50)issues.push(`供应商当前返回 ${members.length} 只成分股，与通常的 50 只不一致，请核对股票池。`);
   let valuation:Awaited<ReturnType<typeof fetchFuyao>>|null=null;
   try{valuation=await get('/api/a-share/valuations/snapshot?'+new URLSearchParams({thscodes:members.map(x=>x.thscode).join(',')}));}catch(e){issues.push((e as Error).message);}
   const peMap=new Map(rows(valuation?.data??{}).map(x=>[x.thscode,x]));
@@ -73,9 +75,9 @@ export async function buildDataset(key:string,report:Report,fetcher:typeof fetch
     const code=String(member.thscode),name=String(member.name??code);
     let revenue=unknownMetric('财务数据不可用。'),profit=unknownMetric('财务数据不可用。');
     let volatility=unknownMetric('价格数据不可用。'),drawdown=unknownMetric('价格数据不可用。');
-    let prices:PricePoint[]=[];
+    let prices:PricePoint[]=[];let history:Stock['profitHistory']=[];
     // Sequential per security: at most two upstream requests globally.
-    try{const f=await get('/api/a-share/financials/income-statements?'+new URLSearchParams({thscode:code,period:'quarterly',limit:'12'}));({revenue,profit}=financialMetrics(rows(f.data),report,f.meta));}catch(e){revenue=unknownMetric((e as Error).message,'%','unavailable');profit={...revenue};}
+    try{const f=await get('/api/a-share/financials/income-statements?'+new URLSearchParams({thscode:code,period:'quarterly',limit:'12'}));({revenue,profit}=financialMetrics(rows(f.data),report,f.meta));history=profitHistory(rows(f.data),f.meta);}catch(e){revenue=unknownMetric((e as Error).message,'%','unavailable');profit={...revenue};}
     try{
       const path='/api/a-share/prices/historical?'+new URLSearchParams({thscode:code,interval:'1d',adjust:'forward',start:String(Date.parse(start+'T00:00:00+08:00')),end:String(Date.parse(end+'T23:59:59+08:00'))});
       const p=await get(path);
@@ -95,25 +97,25 @@ export async function buildDataset(key:string,report:Report,fetcher:typeof fetch
       else if(shanghaiDay(valuation.meta.sourceTime)<end){pe.quality='stale';pe.issue='估值元数据早于本次价格窗口结束日，需重新核实。';}
       pe.evidence=[{source:'扶摇金融数据',endpoint:'/api/a-share/valuations/snapshot',field:'pe_ttm',requestId:valuation.meta.requestId,retrievedAt:valuation.meta.retrievedAt,sourceTime:valuation.meta.sourceTime,raw:rawPe??null,note:'倍；TTM 使用最近连续 12 个月财务数据。来源时间为响应元数据的最大有效时间，不保证所有字段同一时刻更新。跨行业 PE 不代表公允价值。'}];
     }
-    return {code,name,metrics:{revenue,profit,pe,volatility,drawdown},prices};
+    return {code,name,profitHistory:history,metrics:{revenue,profit,pe,volatility,drawdown},prices};
   });
   if(stocks.every(s=>Object.values(s.metrics).every(m=>m.quality!=='ok')))throw new Error('所有证券均无可验证指标，本次未生成正常筛选结果。');
   const incomplete=stocks.filter(s=>Object.values(s.metrics).some(m=>m.quality!=='ok')).length;
   if(incomplete)issues.push(`${incomplete} 只股票至少有一个缺失、不适用或异常指标；是否能够判断取决于所选条件。`);
-  return {id:crypto.randomUUID(),createdAt:new Date().toISOString(),fetchStartedAt,report,tradeDate:end,windowStart:start,universe:{name:'上证 50',code:'000016.SH',count:members.length,sourceTime:u.meta.sourceTime,requestId:u.meta.requestId},stocks,issues,source:'扶摇金融数据'};
+  return {id:crypto.randomUUID(),createdAt:new Date().toISOString(),fetchStartedAt,report,tradeDate:end,windowStart:start,universe:{name:scope==='white-goods'?'白电整机观察组':'上证 50',code:scope==='white-goods'?'881131.TI - 884116.TI':'000016.SH',memberships:parts?[u,parts].map((v,i)=>({source:'扶摇金融数据',endpoint:'/api/a-share-index/constituents/ths-stock-list',field:'thscode / name',requestId:v.meta.requestId,retrievedAt:v.meta.retrievedAt,sourceTime:v.meta.sourceTime,period:'当前板块成分',raw:rows(v.data).map(x=>({code:x.thscode,name:x.name})),note:i===0?'白色家电父集合':'剔除家电零部件集合'})):undefined,count:members.length,sourceTime:u.meta.sourceTime,requestId:u.meta.requestId},stocks,issues,source:'扶摇金融数据'};
 }
-const memory=new Map<Report,Dataset>(),pending=new Map<Report,Promise<Dataset>>();
-export async function getDataset(key:string,report:Report,refresh=false):Promise<Dataset> {
-  let cached=memory.get(report);
+const memory=new Map<string,Dataset>(),pending=new Map<string,Promise<Dataset>>();
+export async function getDataset(key:string,report:Report,refresh=false,scope:'sse50'|'white-goods'='sse50'):Promise<Dataset> {
+  const keyId=scope+':'+report;let cached=memory.get(keyId);
   // Namespaced Workers disable caches.default. Cache availability must not
   // determine whether fresh, verified financial data can be returned.
   let edge:Cache|undefined;
-  try{edge=await globalThis.caches?.open('stock-intent-v4');}catch{ /* memory cache remains available */ }
-  const cacheKey=new Request(`https://stock-intent-cache.internal/v4/${report}`);
+  try{edge=await globalThis.caches?.open('stock-intent-v5');}catch{ /* memory cache remains available */ }
+  const cacheKey=new Request(`https://stock-intent-cache.internal/v5/${scope}/${report}`);
   if(!cached&&edge){try{const r=await edge.match(cacheKey);if(r)cached=await r.json() as Dataset;}catch{ /* fetch fresh data on cache failure */ }}
   const age=cached?Date.now()-Date.parse(cached.createdAt):Infinity;
-  if(cached&&age<(refresh?60000:900000)){memory.set(report,cached);return cached;}
-  if(pending.has(report))return pending.get(report)!;
-  const run=buildDataset(key,report).then(async data=>{memory.set(report,data);if(edge){try{await edge.put(cacheKey,Response.json(data,{headers:{'Cache-Control':'public, max-age=900'}}));}catch{ /* a failed cache write does not invalidate verified data */ }}return data;}).finally(()=>pending.delete(report));
-  pending.set(report,run);return run;
+  if(cached&&age<(refresh?60000:900000)){memory.set(keyId,cached);return cached;}
+  if(pending.has(keyId))return pending.get(keyId)!;
+  const run=buildDataset(key,report,fetch,scope).then(async data=>{memory.set(keyId,data);if(edge){try{await edge.put(cacheKey,Response.json(data,{headers:{'Cache-Control':'public, max-age=900'}}));}catch{ /* a failed cache write does not invalidate verified data */ }}return data;}).finally(()=>pending.delete(keyId));
+  pending.set(keyId,run);return run;
 }

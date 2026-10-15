@@ -1,0 +1,310 @@
+{
+  "at": "2026-10-15T09:30:49.202Z",
+  "rows": [
+    {
+      "query": "经营改善，估值别太高，走势稳一点",
+      "expected": [
+        "growth",
+        "value",
+        "stable"
+      ],
+      "kind": "example",
+      "index": 0,
+      "pass": true,
+      "durationMs": 7092,
+      "actual": {
+        "query": "经营改善，估值别太高，走势稳一点",
+        "goals": [
+          {
+            "id": "growth",
+            "sourceText": "经营改善"
+          },
+          {
+            "id": "value",
+            "sourceText": "估值别太高"
+          },
+          {
+            "id": "stable",
+            "sourceText": "走势稳一点"
+          }
+        ],
+        "constraints": [],
+        "unsupported": [],
+        "question": null,
+        "report": "2026H1",
+        "model": "dots-studio/dots-3-note-preview:free",
+        "knowledgeVersion": "2026-10-15.1",
+        "requestId": "gen-1792056591-zb08E2E3SfKliI1030QJ"
+      }
+    },
+    {
+      "query": "利润比去年同期多，PE不超过20倍",
+      "expected": [
+        "profit_growth"
+      ],
+      "kind": "example",
+      "index": 1,
+      "pass": true,
+      "durationMs": 11132,
+      "actual": {
+        "query": "利润比去年同期多，PE不超过20倍",
+        "goals": [
+          {
+            "id": "profit_growth",
+            "sourceText": "利润比去年同期多"
+          }
+        ],
+        "constraints": [
+          {
+            "field": "pe",
+            "op": "<=",
+            "sourceText": "PE不超过20倍",
+            "value": 20
+          }
+        ],
+        "unsupported": [],
+        "question": null,
+        "report": "2026H1",
+        "model": "dots-studio/dots-3-note-preview:free",
+        "knowledgeVersion": "2026-10-15.1",
+        "requestId": "gen-1792056598-SLYVFOKG75JjJV0K1VeL"
+      }
+    },
+    {
+      "query": "不要大起大落，从高点回落也少一点",
+      "expected": [
+        "low_vol",
+        "low_drawdown"
+      ],
+      "kind": "example",
+      "index": 2,
+      "pass": true,
+      "durationMs": 2902,
+      "actual": {
+        "query": "不要大起大落，从高点回落也少一点",
+        "goals": [
+          {
+            "id": "low_vol",
+            "sourceText": "不要大起大落"
+          },
+          {
+            "id": "low_drawdown",
+            "sourceText": "从高点回落也少一点"
+          }
+        ],
+        "constraints": [],
+        "unsupported": [],
+        "question": null,
+        "report": "2026H1",
+        "model": "dots-studio/dots-3-note-preview:free",
+        "knowledgeVersion": "2026-10-15.1",
+        "requestId": "gen-1792056609-9XM11RWVyxFZPeB01VqY"
+      }
+    },
+    {
+      "query": "本期盈利，收盘价高于20日均线",
+      "expected": [
+        "profitable",
+        "trend"
+      ],
+      "kind": "example",
+      "index": 3,
+      "pass": true,
+      "durationMs": 18010,
+      "actual": {
+        "query": "本期盈利，收盘价高于20日均线",
+        "goals": [
+          {
+            "id": "profitable",
+            "sourceText": "本期盈利"
+          },
+          {
+            "id": "trend",
+            "sourceText": "收盘价高于20日均线"
+          }
+        ],
+        "constraints": [],
+        "unsupported": [],
+        "question": null,
+        "report": "2026H1",
+        "model": "dots-studio/dots-3-note-preview:free",
+        "knowledgeVersion": "2026-10-15.1",
+        "requestId": "gen-1792056612-BRXVUDuPRHm67OOZWzhq"
+      }
+    },
+    {
+      "query": "上年同期亏损，本期扭亏为盈",
+      "expected": [
+        "turnaround"
+      ],
+      "kind": "example",
+      "index": 4,
+      "pass": true,
+      "durationMs": 13883,
+      "actual": {
+        "query": "上年同期亏损，本期扭亏为盈",
+        "goals": [
+          {
+            "id": "turnaround",
+            "sourceText": "上年同期亏损,本期扭亏为盈"
+          }
+        ],
+        "constraints": [],
+        "unsupported": [],
+        "question": null,
+        "report": "2026H1",
+        "model": "dots-studio/dots-3-note-preview:free",
+        "knowledgeVersion": "2026-10-15.1",
+        "requestId": "gen-1792056630-nkwfjf9a69nEMfg5fX5F"
+      }
+    },
+    {
+      "query": "近60个交易日涨幅大于0%，营收同比大于0%",
+      "expected": [],
+      "kind": "example",
+      "index": 5,
+      "pass": true,
+      "durationMs": 0,
+      "actual": {
+        "query": "近60个交易日涨幅大于0%，营收同比大于0%",
+        "goals": [],
+        "constraints": [
+          {
+            "field": "revenue",
+            "op": ">",
+            "value": 0,
+            "sourceText": "营收同比大于0"
+          },
+          {
+            "field": "return60",
+            "op": ">",
+            "value": 0,
+            "sourceText": "近60个交易日涨幅大于0"
+          }
+        ],
+        "unsupported": [],
+        "question": null,
+        "report": "2026H1",
+        "model": "明确条件解析（未调用模型）",
+        "knowledgeVersion": "2026-10-15.1"
+      }
+    },
+    {
+      "query": "PE≤20",
+      "expected": [],
+      "kind": "explicit",
+      "pass": true,
+      "durationMs": 1,
+      "actual": {
+        "query": "PE≤20",
+        "goals": [],
+        "constraints": [
+          {
+            "field": "pe",
+            "op": "<=",
+            "value": 20,
+            "sourceText": "PE<=20"
+          }
+        ],
+        "unsupported": [],
+        "question": null,
+        "report": "2026H1",
+        "model": "明确条件解析（未调用模型）",
+        "knowledgeVersion": "2026-10-15.1"
+      }
+    },
+    {
+      "query": "不要亏损公司",
+      "expected": [
+        "profitable"
+      ],
+      "kind": "negation",
+      "pass": true,
+      "durationMs": 5501,
+      "actual": {
+        "query": "不要亏损公司",
+        "goals": [
+          {
+            "id": "profitable",
+            "sourceText": "不要亏损公司"
+          }
+        ],
+        "constraints": [],
+        "unsupported": [],
+        "question": null,
+        "report": "2026H1",
+        "model": "dots-studio/dots-3-note-preview:free",
+        "knowledgeVersion": "2026-10-15.1",
+        "requestId": "gen-1792056644-UaArdwVoHUrzUwSzRR2O"
+      }
+    },
+    {
+      "query": "现金流好，PE不超过20",
+      "expected": [],
+      "kind": "unsupported",
+      "pass": true,
+      "durationMs": 0,
+      "actual": {
+        "query": "现金流好，PE不超过20",
+        "goals": [],
+        "constraints": [],
+        "unsupported": [
+          "现金流要求需要现金流表及多期核查。本版不能用利润增长代替。"
+        ],
+        "question": null,
+        "report": "2026H1",
+        "model": "规则边界检查（未调用模型）",
+        "knowledgeVersion": "2026-10-15.1"
+      }
+    },
+    {
+      "query": "银行股便宜一点",
+      "expected": [],
+      "kind": "unsupported",
+      "pass": true,
+      "durationMs": 0,
+      "actual": {
+        "query": "银行股便宜一点",
+        "goals": [],
+        "constraints": [],
+        "unsupported": [
+          "当前只接入白电整机观察组，不能把其他范围的要求改在本组执行。"
+        ],
+        "question": null,
+        "report": "2026H1",
+        "model": "规则边界检查（未调用模型）",
+        "knowledgeVersion": "2026-10-15.1"
+      }
+    },
+    {
+      "query": "PE大于30，PE小于20",
+      "expected": [],
+      "kind": "conflict",
+      "pass": true,
+      "durationMs": 0,
+      "actual": {
+        "query": "PE大于30，PE小于20",
+        "goals": [],
+        "constraints": [
+          {
+            "field": "pe",
+            "op": ">",
+            "value": 30,
+            "sourceText": "PE大于30"
+          },
+          {
+            "field": "pe",
+            "op": "<",
+            "value": 20,
+            "sourceText": "PE小于20"
+          }
+        ],
+        "unsupported": [],
+        "question": null,
+        "report": "2026H1",
+        "model": "明确条件解析（未调用模型）",
+        "knowledgeVersion": "2026-10-15.1"
+      }
+    }
+  ]
+}
